@@ -6,8 +6,8 @@ A primeira parte do script retorna uma tabela com as estações automáticas e m
 
 Após a tabela mencionada ser gerada, os códigos das estações presentes em um vetor de Estados de exemplo são filtrados e as informações meteorológicas dos mesmos são obtidas e passadas para uma tabela. São pegos os dados **diários** e como algumas estações operam há vários anos, o vetor de Estados do exemplo cria uma tabela grande, que demora vários minutos para ser formada.
 As colunas presentes na tabela de Clima são:
-1. Temperatura máxima diária
-2. Umidade média diária
+1. Temperatura máxima diária (°C)
+2. Umidade média diária (%)
 3. UF
 4. Data
 5. Nome da estação
