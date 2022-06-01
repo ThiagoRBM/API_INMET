@@ -74,13 +74,39 @@ inicioOperacao=tabEsta %>%
   mutate(DT_INICIO_OPERACAO= format(DT_INICIO_OPERACAO, format = "%Y")) %>% 
   dplyr::summarise(nData= n()) ## sumarizando os dados de ano de início de operação de estações
 
+listaPeriodos= vector("list")
+for(i in 1:length(tabEsta$DT_INICIO_OPERACAO[tabEsta$SG_ESTADO %in% Estados])){
+  estacao= tabEsta[tabEsta$SG_ESTADO %in% Estados][i]
+  inicio= estacao$DT_INICIO_OPERACAO
+  periodos= seq(inicio,to= Sys.Date(), by='6 month')
+  estado= estacao$SG_ESTADO
+  codigo= estacao$CD_ESTACAO
+  vecPeriodos= vector("list", length= length(periodos))
+  for(periodo in 1:length(periodos)){
+    inicio= as.Date(periodos[periodo])
+    fim= as.Date(periodos[periodo+1])
+    vecPeriodos[[periodo]]= data.frame(estado,inicio,fim,codigo)
+    if(periodo == length(periodos)){
+      vecPeriodos= do.call("rbind", vecPeriodos)
+    }
+  }
+  listaPeriodos[[i]]=vecPeriodos
+  
+  if(i == length(tabEsta$DT_INICIO_OPERACAO[tabEsta$SG_ESTADO %in% Estados])){
+    listaPeriodos= do.call("rbind", listaPeriodos) %>% 
+      data.frame() %>% 
+      tidyr::drop_na(fim)
+  }
+}
+
+
 
 url= paste0("https://apitempo.inmet.gov.br/estacao/diaria/", 
-            tabEsta$DT_INICIO_OPERACAO[tabEsta$SG_ESTADO %in% Estados], 
+            listaPeriodos$inicio,"/",
             ## quixeramobim (CE, codigo 82586) é a estação com inicio de operacao mais antigo
             ## mas aparentemente so estao disponiveis os dados a partir de 1961
-            "/2020-12-31/",
-            tabEsta$CD_ESTACAO[tabEsta$SG_ESTADO %in% Estados]) ## montando as URL para
+            listaPeriodos$fim,"/",
+            listaPeriodos$codigo) ## montando as URL para
 ## as buscas dos dados meteorológicos dos estados do vetor, com base nos Estados de interesse
 ## e nas data de início das operações
 
