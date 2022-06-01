@@ -20,3 +20,5 @@ As colunas presentes na tabela de Clima são:
 
 Dois gráficos são criados em seguida, com a tabela para os Estados, como exemplo.
 Um com as temperaturas médias anuais (de todas as estações) por ano e outro com as temperaturas por estação do ano, por estação meteorológica, por Estado, com linhas horizontais para marcar a média da estação do ano para todos os Estados.
+
+Por volta de maio/2022, descobri que o pessoal do site tinha limitado o período de busca a no máximo 6 meses. Atualizei o script. Agora ele quebra o período em 6 meses e faz vários pedidos ao site automaticamente. Demora bem mais tempo, mas continua pegando os dados automaticamente.
